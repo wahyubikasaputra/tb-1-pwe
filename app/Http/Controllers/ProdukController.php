@@ -21,11 +21,20 @@ class ProdukController extends Controller
 
     public function CreateProduk(Request $request)
     {
+        // menambahkan variabel $filePath untuk mendefinisikan penyimpanan file
+        $imageName = null;
+        if ($request->hasFile('image')){
+            $imageFile = $request->file('image');
+            $imageName = time() . '_' . $imageFile->getClientOriginalName();
+            $imageFile->storeAs('public/images',$imageName);
+        }
+
         Produk::create([
             'nama_produk'=> $request->nama_produk,
             'deskripsi'=> $request->deskripsi,
             'harga'=> $request->harga,
-            'jumlah_produk'=> $request->jumlah_produk
+            'jumlah_produk'=> $request->jumlah_produk,
+            'image'=> $imageName
         ]);
 
         // return redirect('/produk');
@@ -50,13 +59,30 @@ class ProdukController extends Controller
     return view("addproduk",$data);
     }
     public function updateProduct(Request $request){
+        if ($request->hasFile('image')){
+            $imageFile = $request->file('image');
+            $imageName = time() . '_' . $imageFile->getClientOriginalName();
+            $imageFile->storeAs('public/images',$imageName);
+        }
+
+        Produk::where([
+            'nama_produk'=> $request->nama_produk,
+            'deskripsi'=> $request->deskripsi,
+            'harga'=> $request->harga,
+            'jumlah_produk'=> $request->jumlah_produk,
+            'image'=> $imageName
+        ]);
+
     $updateprd=produk::find($request->kode_produk);
     $updateprd->nama_produk=$request->nama_produk;
     $updateprd->deskripsi=$request->deskripsi;
     $updateprd->harga=$request->harga;
     $updateprd->jumlah_produk=$request->jumlah_produk;
+    $updateprd->image=$imageName;
     $updateprd->save();
     return redirect('/produk')->with('berhasil','Data Berhasil Diupdate');
+
+
     }
 
 }

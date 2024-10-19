@@ -15,7 +15,7 @@
         <div>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
             Add Product
-              </button>
+            </button>
         </div>
     </header>
 
@@ -24,7 +24,7 @@
 <!-- Product Card 1 -->
 @foreach ($produk as $item)
 <div class="product-card">
-    <img src="https://via.placeholder.com/200" alt="Produk 1">
+    <img src="{{ url('storage/public/images/' . $item->image) }}" alt="Produk 1">
     <h3>{{$item->nama_produk}}</h3>
     <p class="price">{{$item->harga}}</p>
     <p class="description">{{$item->deskripsi}}</p>
@@ -48,7 +48,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form action="{{url('/produk/add')}}" method="POST">
+        <form action="{{url('/produk/add')}}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="nama_produk">Nama Produk</label>
@@ -61,13 +61,18 @@
             </div>
 
             <div class="form-group">
-                <label for="deskripsi">Harga</label>
+                <label for="harga">Harga</label>
                 <input type="number" name="harga" class="form-control" required>
             </div>
 
             <div class="form-group">
                 <label for="jumlah_produk">Jumlah Produk</label>
                 <input type="text" name="jumlah_produk" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="image">Gambar</label>
+                <input type="file" name="image" class="form-control" required>
             </div>
             <button type="submit" class="btn btn-primary">Create</button>
         </form>

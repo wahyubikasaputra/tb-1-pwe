@@ -9,7 +9,7 @@
         <div class="container">
             <h1>Update Data Produk</h1>
             @foreach ($produkupd as $item )
-            <form action="{{url('/produk/upd')}}" method="POST">
+            <form action="{{ url('/produk/upd')}}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="kode_produk" value="{{$item->kode_produk }}">
                 <div class="form-group">
@@ -30,6 +30,11 @@
                 <div class="form-group">
                     <label for="jumlah_produk">Jumlah Produk</label>
                     <input type="text" name="jumlah_produk" value="{{$item->jumlah_produk}}" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="image">Gambar</label>
+                    <input type="file" name="image" class="form-control" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Update produk</button>
             </form>
